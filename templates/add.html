@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adding shit</title>
+</head>
+<body>
+<!-- The form action and method correspond to a Flask route -->
+<form action="/add" method="POST">
+
+<label for="person_firstname">Name</label>
+<input id="person_firstname" name="firstname_field" type="text" />
+
+<label for="person_username">Username</label>
+<input id="person_username" name="person_username_field" type="text" size="4" />
+
+
+<!-- We need a submit button to submit a form! -->
+<input type="submit" value="Add"/>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,43 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}MIPT IMDb{% endblock %}
+{% block styles %}
+{{super()}}
+<style>
+    div.scrollable {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+}
+</style>
+{% endblock %}
+{% block content %}
+<h1>This is the list of available films</h1>
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+
+            {% for field in obj.columns() %}
+            <th scope="col"> {{ field }} </th>
+            {% endfor %}
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for film in films %}
+    <tr>
+
+        <th scope="row">{{ film.uid }} </th>
+        <td><a href="/films/{{ film.uid }}/"> {{ film.name }} </a> </td>
+        <td>{{ film.country_films }}</td>
+        <td>{{ film.birth }}</td>
+        <td width="240px"><div class="scrollable">{{ film.description }}</div></td>
+
+
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
