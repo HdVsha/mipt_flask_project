@@ -30,8 +30,10 @@ def films():
     return render_template("films.html", films=films, obj=Film())
 
 
-@app.route('/films/<int:uid>', methods=["GET"])
+@app.route('/films/<int:uid>/', methods=["GET"])
 def film(uid):
-    film = Film.query.filter_by(uid=uid).one()
+    film = Film.query.filter_by(uid=uid).first()
+    if film:
+        return render_template("film.html", film=film)
+    return '<p>This film does not exist</p>'
 
-    return render_template("film.html")

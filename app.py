@@ -19,4 +19,4 @@ if __name__ == "__main__":
 
     from views import *
 
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5019)  # 0.0.0.0 означает «все адреса IPv4 на локальном компьютере».
