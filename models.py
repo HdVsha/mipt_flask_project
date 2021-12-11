@@ -9,11 +9,20 @@ Positions of classes actually play role here
 
 # Creating an assisting table Role for Many To Many relation
 
-association_table = db.Table('Role', db.metadata,
-                             db.Column('person_uid', db.ForeignKey('Person.uid'), primary_key=True),
-                             db.Column('film_uid', db.ForeignKey('Film.uid'), primary_key=True),
-                             db.Column("name", db.String(50)),
-                             )
+# association_table = db.Table('Role', db.metadata,
+#                              db.Column('person_uid', db.ForeignKey('Person.uid'), primary_key=True),
+#                              db.Column('film_uid', db.ForeignKey('Film.uid'), primary_key=True),
+#                              db.Column("name", db.String(50)),
+#                              )
+
+
+class Role(db.Model):
+    __tablename__ = "Role"
+    person_id = db.Column(db.ForeignKey('Person.uid'), primary_key=True)
+    film_id = db.Column(db.ForeignKey('Film.uid'), primary_key=True)
+    role = db.Column(db.String(50))
+    person = db.relationship("Person", back_populates="films")
+    film = db.relationship("Film", back_populates="people")
 
 
 class Country(db.Model):
@@ -34,8 +43,7 @@ class Person(db.Model):
     password = db.Column(db.String(50))
     email = db.Column(db.String(50), unique=True)
     birth = db.Column(db.Date)
-    films = db.relationship("Film",
-                            secondary=association_table)
+    films = db.relationship("Role", back_populates="person")
 
     def __init__(self, firstname, username):
         self.firstname = firstname
@@ -65,6 +73,7 @@ class Film(db.Model):
     country_id = db.Column(db.Integer, db.ForeignKey("Country.uid"))
     birth = db.Column(db.Date)
     description = db.Column(db.String(150))
+    people = db.relationship("Role", back_populates="film")
 
     def __str__(self):
         return f"{self.name}"
@@ -80,3 +89,11 @@ if __name__ == "__main__":
     print("Creating database tables...")
     db.create_all()
     print("Done!")
+
+from models import Person, Role, Film
+p = Person(firstname="Test2", username="Test2")
+f = Film(name="Test2")
+r = Role(role="Director")
+r.film = f
+p.films.append(r)
+from app import db

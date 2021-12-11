@@ -43,3 +43,11 @@ def people():
     people = Person.query.order_by("uid").all()
     # Can create an obj of class bc without transaction to db it won't get into db
     return render_template("people.html", people=people, obj=Person(firstname="Temp", username="Temp"))
+
+
+@app.route('/people/<int:uid>/', methods=["GET"])
+def person(uid):
+    person = Person.query.filter_by(uid=uid).first()
+    if person:
+        return render_template("person.html", person=person)
+    return '<p>This person does not exist</p>'
