@@ -2,7 +2,7 @@ from app import app
 
 from flask import render_template, request
 from models import create_person
-from models import Film
+from models import Film, Person
 
 
 @app.route('/')
@@ -37,3 +37,9 @@ def film(uid):
         return render_template("film.html", film=film)
     return '<p>This film does not exist</p>'
 
+
+@app.route('/people/', methods=["GET"])
+def people():
+    people = Person.query.order_by("uid").all()
+    # Can create an obj of class bc without transaction to db it won't get into db
+    return render_template("people.html", people=people, obj=Person(firstname="Temp", username="Temp"))

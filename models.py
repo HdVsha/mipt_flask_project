@@ -44,12 +44,17 @@ class Person(db.Model):
     def __str__(self):
         return f"{self.firstname}"
 
+    def columns(self):
+        """Return the actual columns of a SQLAlchemy-mapped object"""
+        return [prop.key for prop in class_mapper(self.__class__).iterate_properties
+                if isinstance(prop, ColumnProperty)]
+
 
 def create_person(person_name, person_username):
     person = Person(person_name, person_username)
     db.session.add(person)
     db.session.commit()
-    print(person)
+
     return person
 
 

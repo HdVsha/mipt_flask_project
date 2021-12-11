@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "bootstrap/base.html" %}
+{% block title %}MIPT IMDb{% endblock %}
+{% block styles %}
+{{super()}}
+<style>
+    div.scrollable {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+}
+</style>
+{% endblock %}
+{% block content %}
+<h1>This is the list of available films</h1>
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
 
-</body>
-</html>
+            {% for field in obj.columns() %}
+                {% if field != password %}
+                <th scope="col"> {{ field }} </th>
+                {% endif %}
+            {% endfor %}
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for person in people %}
+    <tr>
+
+        <th scope="row">{{ person.uid }} </th>
+        <td><a href="/people/{{ person.uid }}/"> {{ person.firstname }} </a> </td>
+        <td>{{ person.lastname }}</td>
+        <td>{{ person.birth }}</td>
+        <td>{{ person.username }}</td>
+        <td>{{ person.email }}</td>
+        <td>{{ person.country_of_birth }}</td>
+
+
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
