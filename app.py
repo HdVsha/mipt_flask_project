@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.sql'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Вставил, потому что слишком нагружает систему
                                                # (судя по warning-у)
 db = SQLAlchemy(app)

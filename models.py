@@ -1,5 +1,6 @@
 from app import db
 from sqlalchemy.orm import class_mapper, ColumnProperty
+from sqlalchemy import UniqueConstraint
 
 '''
 
@@ -12,11 +13,13 @@ Positions of classes actually play role here
 
 class Role(db.Model):
     __tablename__ = "Role"
-    person_id = db.Column(db.ForeignKey('Person.uid'), primary_key=True)
-    film_id = db.Column(db.ForeignKey('Film.uid'), primary_key=True)
+    uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    person_id = db.Column(db.ForeignKey('Person.uid'))
+    film_id = db.Column(db.ForeignKey('Film.uid'))
     role = db.Column(db.String(50))
     person = db.relationship("Person", back_populates="films")
     film = db.relationship("Film", back_populates="people")
+    UniqueConstraint(role, person_id, film_id, name="uniq_pers_film")
 
 
 class Country(db.Model):
@@ -34,6 +37,7 @@ def create_country(name):
 
     return country
 
+
 class Person(db.Model):
     __tablename__ = "Person"
     uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -45,7 +49,8 @@ class Person(db.Model):
     email = db.Column(db.String(50), unique=True)
     birth = db.Column(db.Date)
     films = db.relationship("Role", back_populates="person")
-
+    UniqueConstraint(firstname, lastname, birth, name="uniq_pers")
+    
     def __init__(self, firstname, lastname, username=None, email=None, birth=None, country_id=None):
         self.firstname = firstname
         self.lastname = lastname
@@ -86,7 +91,8 @@ class Film(db.Model):
     birth = db.Column(db.Date)
     description = db.Column(db.String(150))
     people = db.relationship("Role", back_populates="film")
-
+    UniqueConstraint(name, birth, name="uniq_film")
+    
     def __str__(self):
         return f"{self.name}"
 
