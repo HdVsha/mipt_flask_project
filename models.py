@@ -9,12 +9,6 @@ Positions of classes actually play role here
 
 # Creating an assisting table Role for Many To Many relation
 
-# association_table = db.Table('Role', db.metadata,
-#                              db.Column('person_uid', db.ForeignKey('Person.uid'), primary_key=True),
-#                              db.Column('film_uid', db.ForeignKey('Film.uid'), primary_key=True),
-#                              db.Column("name", db.String(50)),
-#                              )
-
 
 class Role(db.Model):
     __tablename__ = "Role"
@@ -90,10 +84,10 @@ if __name__ == "__main__":
     db.create_all()
     print("Done!")
 
-from models import Person, Role, Film
-p = Person(firstname="Test2", username="Test2")
-f = Film(name="Test2")
-r = Role(role="Director")
-r.film = f
-p.films.append(r)
-from app import db
+# from models import Person, Role, Film
+# p = Person(firstname="Test2", username="Test2")
+# f = Film(name="Test2")
+# r = Role(role="Director")
+# r.film = f
+# p.films.append(r)
+# from app import db

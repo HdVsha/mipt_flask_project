@@ -13,17 +13,13 @@
 </style>
 {% endblock %}
 {% block content %}
-<h1>This is the list of available films</h1>
+<h1>This is the list of people connected to cinema</h1>
 <table class="table table-hover">
   <thead class="thead-dark">
     <tr>
-
-            {% for field in obj.columns() %}
-                {% if field != password %}
-                <th scope="col"> {{ field }} </th>
-                {% endif %}
-            {% endfor %}
-
+            <th scope="col">  uid  </th>
+            <th scope="col">  firstname  </th>
+            <th scope="col">  lastname  </th>
     </tr>
   </thead>
   <tbody>
@@ -33,10 +29,6 @@
         <th scope="row">{{ person.uid }} </th>
         <td><a href="/people/{{ person.uid }}/"> {{ person.firstname }} </a> </td>
         <td>{{ person.lastname }}</td>
-        <td>{{ person.birth }}</td>
-        <td>{{ person.username }}</td>
-        <td>{{ person.email }}</td>
-        <td>{{ person.country_of_birth }}</td>
 
 
     </tr>

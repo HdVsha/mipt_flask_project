@@ -2,33 +2,52 @@
 {% block title %}MIPT IMDb{% endblock %}
 
 {% block content %}
-
+<h2>
+    Film information
+</h2>
 <table class="table table-bordered border-primary">
   <thead>
     <tr>
-
-            {% for field in film.columns() %}
-            {% if field == "country_id" %}
-                <th scope="col"> country </th>
-            {% else %}
-                <th scope="col"> {{ field }} </th>
-            {% endif %}
-
-            {% endfor %}
+        <th bgcolor="aqua"> Key </th>
+        <th bgcolor="aqua"> value </th>
 
     </tr>
   </thead>
   <tbody>
+        {% for field in film.columns() %}
+            <tr>
+            {% if field == "country_id" %}
+                <th scope="col"> country </th>
+                <td > {{ film.country_films.name or None}} </td>
+            {% else %}
+                <th scope="col"> {{ field }} </th>
+                <td > {{ film[field] }} </td>  <!-- the same as getattr(foo, "bar")-->
+            {% endif %}
+
+            {% endfor %}
+            </tr>
+  </tbody>
+</table>
+
+<h2>
+    People connected to the film
+</h2>
+
+<table class="table">
+    <thead>
     <tr>
-
-        <th scope="row">{{ film.uid }} </th>
-        <td> {{ film.name }} </td>
-        <td>{{ film.country_films }}</td>
-        <td>{{ film.birth }}</td>
-        <td>{{ film.description }}</td>
-
+        <th> Role </th>
+        <th> Person </th>
 
     </tr>
+  </thead>
+  <tbody>
+        {% for role in film.people %}
+            <tr>
+                <th scope="col" > {{ role.role }} </th>
+                <td > <a href="/people/{{role.person.uid}}"> {{ role.person }} {{ role.person.lastname }} </a></td>  <!-- the same as getattr(foo, "bar")-->
+            </tr>
+        {% endfor %}
   </tbody>
 </table>
 {% endblock %}

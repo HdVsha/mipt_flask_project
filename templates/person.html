@@ -2,36 +2,53 @@
 {% block title %}MIPT IMDb{% endblock %}
 
 {% block content %}
-
+<h2>
+    Personal information
+</h2>
 <table class="table table-bordered border-primary">
-  <thead>
+    <thead>
     <tr>
-
-            {% for field in person.columns() %}
-            {% if field != "password" %}
-                {% if field == "country_of_birth_id" %}
-                    <th scope="col"> country of birth </th>
-                {% else %}
-                    <th scope="col"> {{ field }} </th>
-                {% endif %}
-            {% endif %}
-            {% endfor %}
+        <th bgcolor="#faebd7"> Key </th>
+        <th bgcolor="#faebd7"> Value </th>
 
     </tr>
   </thead>
   <tbody>
+        {% for field in person.columns() %}
+            <tr>
+            {% if field != "password" %}
+                {% if field == "country_of_birth_id" %}
+                    <th scope="col"> country of birth</th>
+                    <td > {{ person.country_of_birth.name or None }} </td>
+                {% else %}
+                    <th scope="col" > {{ field }} </th>
+                    <td > {{ person[field] }} </td>  <!-- the same as getattr(foo, "bar")-->
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+            </tr>
+  </tbody>
+</table>
+
+<h2>
+    The list of attended films
+</h2>
+
+<table class="table">
+    <thead>
     <tr>
-
-        <th scope="row">{{ person.uid }} </th>
-        <td> {{ person.firstname }} </td>
-        <td> {{ person.lastname }} </td>
-        <td>{{ person.country_of_birth }}</td>
-        <td>{{ person.birth }}</td>
-        <td>{{ person.email }}</td>
-        <td>{{ person.username }}</td>
-
+        <th> Film </th>
+        <th> Role </th>
 
     </tr>
+  </thead>
+  <tbody>
+        {% for role in person.films %}
+            <tr>
+                <th scope="col" > <a href="/films/{{ role.film.uid }}">{{ role.film }} </a></th>
+                <td > {{ role.role }} </td>  <!-- the same as getattr(foo, "bar")-->
+            </tr>
+        {% endfor %}
   </tbody>
 </table>
 {% endblock %}
