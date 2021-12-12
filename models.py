@@ -22,10 +22,17 @@ class Role(db.Model):
 class Country(db.Model):
     __tablename__ = "Country"
     uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(50))
+    name = db.Column(db.String(50), unique=True)
     people = db.relationship("Person", backref="country_of_birth")
     films = db.relationship("Film", backref="country_films")
 
+
+def create_country(name):
+    country = Country(name=name)
+    db.session.add(country)
+    db.session.commit()
+
+    return country
 
 class Person(db.Model):
     __tablename__ = "Person"
@@ -39,9 +46,13 @@ class Person(db.Model):
     birth = db.Column(db.Date)
     films = db.relationship("Role", back_populates="person")
 
-    def __init__(self, firstname, username):
+    def __init__(self, firstname, lastname, username=None, email=None, birth=None, country_id=None):
         self.firstname = firstname
+        self.lastname = lastname
         self.username = username
+        self.email = email
+        self.birth = birth
+        self.country_of_birth_id = country_id
 
     def __str__(self):
         return f"{self.firstname}"
@@ -52,12 +63,19 @@ class Person(db.Model):
                 if isinstance(prop, ColumnProperty)]
 
 
-def create_person(person_name, person_username):
-    person = Person(person_name, person_username)
+def create_person(person_name, lastname, username=None, email=None, birth=None, country_of_birth_id=None):
+    person = Person(person_name, lastname, username, email, birth, country_of_birth_id)
     db.session.add(person)
     db.session.commit()
 
     return person
+
+
+def create_film(**kwargs):
+    film = Film(**kwargs)
+    db.session.add(film)
+    db.session.commit()
+    return film
 
 
 class Film(db.Model):

@@ -13,7 +13,10 @@
 </style>
 {% endblock %}
 {% block content %}
-<h1>This is the list of available films</h1>
+<h1>This is the list of available films
+<a href="/film/add/">
+    <button type="button" class="btn btn-primary">Add</button>
+</a></h1>
 <table class="table table-hover">
   <thead class="thead-dark">
     <tr>
@@ -34,7 +37,7 @@
 
         <th scope="row" >{{ film.uid }} </th>
         <td><a href="/films/{{ film.uid }}/"> {{ film.name }} </a> </td>
-        <td>{{ film.country_films }}</td>
+        <td>{{ film.country_films.name }}</td>
         <td>{{ film.birth }}</td>
         <td width="240px"><div class="scrollable">{{ film.description }}</div></td>
 
