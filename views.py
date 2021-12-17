@@ -12,56 +12,36 @@ def hello():
 
 @app.route('/person/add/', methods=['GET', 'POST'])
 def person_add():
-    countries = Country.query.all()
     if request.method == 'GET':
-        return render_template('person_add.html', countries=countries)
+        return render_template('person_add.html')
 
-    person_name = request.form.get('person_firstname_field')
-    person_lastname = request.form.get('person_lastname_field')
-    person_email = request.form.get('person_email_field')
+    person_firstname_lastname = request.form.get('person_firstname_field')
     person_birth = request.form.get('person_birth_field')
-    person_username = request.form.get('person_username_field')
-    person_country = request.form.get('person_country_field')
-    if person_birth:
-        person_birth = datetime.datetime.strptime(person_birth, '%Y-%m-%d').date()
-    person = create_person(person_name, person_lastname, person_username, person_email, person_birth, person_country)
+    fields = {
+        "firstname_lastname": person_firstname_lastname,
+        "birth": person_birth
+    }
+    person = create_person(**fields)
 
-    return render_template('person_add.html', person=person, countries=countries)
+    return render_template('person_add.html', person=person)
 
 
 @app.route('/film/add/', methods=['GET', 'POST'])
 def film_add():
-    countries = Country.query.all()
     if request.method == 'GET':
-        return render_template('film_add.html', countries=countries)
+        return render_template('film_add.html')
 
     film_name = request.form.get('film_name_field')
     film_birth = request.form.get('film_birth_field')
     film_description = request.form.get('film_description_field')
-    film_country = request.form.get('film_country_field')
-    if film_birth:
-        film_birth = datetime.datetime.strptime(film_birth, '%Y-%m-%d').date()
     film = {
         "name": film_name,
-        "birth": film_birth,
+        "birth": int(film_birth),
         "description": film_description,
-        "country_id": film_country
     }
     film = create_film(**film)
 
-    return render_template('film_add.html', film=film, countries=countries)
-
-
-@app.route('/country/add/', methods=['GET', 'POST'])
-def country_add():
-    if request.method == 'GET':
-        return render_template('country_add.html')
-
-    country_name = request.form.get('country_name_field')
-
-    country = create_country(country_name)
-
-    return render_template('country_add.html', country=country)
+    return render_template('film_add.html', film=film)
 
 
 @app.route('/films/', methods=["GET"])
@@ -83,7 +63,7 @@ def film(uid):
 def people():
     people = Person.query.order_by("uid").all()
     # Can create an obj of class bc without transaction to db it won't get into db
-    return render_template("people.html", people=people, obj=Person(firstname="Temp", lastname="Temp"))
+    return render_template("people.html", people=people, obj=Person(firstname_lastname="Tmp"))
 
 
 @app.route('/people/<int:uid>/', methods=["GET"])

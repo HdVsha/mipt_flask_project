@@ -16,15 +16,8 @@
   <tbody>
         {% for field in person.columns() %}
             <tr>
-            {% if field != "password" %}
-                {% if field == "country_of_birth_id" %}
-                    <th scope="col"> country of birth</th>
-                    <td > {{ person.country_of_birth.name or None }} </td>
-                {% else %}
-                    <th scope="col" > {{ field }} </th>
-                    <td > {{ person[field] }} </td>  <!-- the same as getattr(foo, "bar")-->
-                {% endif %}
-            {% endif %}
+                <th scope="col" > {{ field }} </th>
+                <td > {{ person[field] }} </td>  <!-- the same as getattr(foo, "bar")-->
             {% endfor %}
             </tr>
   </tbody>
@@ -47,6 +40,26 @@
             <tr>
                 <th scope="col" > <a href="/films/{{ role.film.uid }}">{{ role.film }} </a></th>
                 <td > {{ role.role }} </td>  <!-- the same as getattr(foo, "bar")-->
+            </tr>
+        {% endfor %}
+  </tbody>
+</table>
+
+<h2>
+    The list of Person Countries
+</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th> Countries </th>
+
+    </tr>
+  </thead>
+  <tbody>
+        {% for country in person.countries %}
+            <tr>
+                <td > {{ country.country.name }} </td>  <!-- the same as getattr(foo, "bar")-->
             </tr>
         {% endfor %}
   </tbody>

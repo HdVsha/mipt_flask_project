@@ -3,39 +3,19 @@
 {% block content %}
 {% if person %}
 
-<p><strong>{{person.firstname}} {{person.lastname}}</strong> successfully created! Add another below.</p>
+<p><strong>{{person.firstname_lastname}}</strong> successfully created! Add another below.</p>
 <p><a href="/people/">Back to People List</a></p>
 
 {% endif %}
 <!-- The form action and method correspond to a Flask route -->
 <form action="/person/add/" method="POST">
   <div class="form-group">
-    <label for="person_firstname">Name</label>
-    <input type="text" class="form-control" id="person_firstname" name="person_firstname_field" placeholder="Рамиль">
-  </div>
-  <div class="form-group">
-    <label for="person_lastname">Second Name</label>
-    <input type="text" class="form-control" id="person_lastname" name="person_lastname_field" placeholder="Агеев">
-  </div>
-  <div class="form-group">
-    <label for="person_email">Email</label>
-    <input type="text" class="form-control" id="person_email" name="person_email_field" placeholder="ageev@mipt.ru">
+    <label for="person_firstname">Name and Surname</label>
+    <input type="text" class="form-control" id="person_firstname" name="person_firstname_field" placeholder="Рамиль Агеев">
   </div>
   <div class="form-group">
     <label for="person_birth">Birth date</label>
-    <input type="text" class="form-control" id="person_birth" name="person_birth_field" placeholder="yyyy-MM-dd">
-  </div>
-  <div class="form-group">
-    <label for="person_username">Person username</label>
-    <input type="text" class="form-control" id="person_username" name="person_username_field" placeholder="Superman_4">
-  </div>
-  <div class="form-group">
-    <label for="film_country">Where this person was born</label>
-    <select class="form-control" id="person_country" name="person_country_field">
-        {% for country in countries%}
-            <option value="{{ country.uid }}">{{country.name}}</option>
-        {% endfor %}
-    </select>
+    <input type="text" class="form-control" id="person_birth" name="person_birth_field" placeholder="2001">
   </div>
     <!-- We need a submit button to submit a form! -->
     <input type="submit" value="Add" class="btn btn-primary"/>

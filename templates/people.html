@@ -20,8 +20,8 @@
   <thead class="thead-dark">
     <tr>
             <th scope="col">  uid  </th>
-            <th scope="col">  firstname  </th>
-            <th scope="col">  lastname  </th>
+            <th scope="col">  Firstname Lastname  </th>
+            <th scope="col">  Birth Date  </th>
     </tr>
   </thead>
   <tbody>
@@ -29,8 +29,8 @@
     <tr>
 
         <th scope="row">{{ person.uid }} </th>
-        <td><a href="/people/{{ person.uid }}/"> {{ person.firstname }} </a> </td>
-        <td>{{ person.lastname }}</td>
+        <td><a href="/people/{{ person.uid }}/"> {{ person.firstname_lastname }} </a> </td>
+        <td> {{ person.birth }} </td>
 
 
     </tr>

@@ -15,19 +15,11 @@
   </div>
   <div class="form-group">
     <label for="film_birth">When film was shot</label>
-    <input type="text" class="form-control" id="film_birth" name="film_birth_field" placeholder="yyyy-MM-dd">
+    <input type="text" class="form-control" id="film_birth" name="film_birth_field" placeholder="2001">
   </div>
     <div class="form-group">
     <label for="film_description">Describe the film</label>
     <textarea class="form-control" id="film_description" rows="3" name="film_description_field"></textarea>
-  </div>
-    <div class="form-group">
-    <label for="film_country">Where this film was shot</label>
-    <select class="form-control" id="film_country" name="film_country_field">
-        {% for country in countries%}
-            <option value="{{ country.uid }}">{{country.name}}</option>
-        {% endfor %}
-    </select>
   </div>
     <!-- We need a submit button to submit a form! -->
     <input type="submit" value="Add" class="btn btn-primary"/>

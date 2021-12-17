@@ -22,11 +22,7 @@
     <tr>
 
             {% for field in obj.columns() %}
-            {% if field == "country_id"%}
-                <th scope="col" > country </th>
-            {% else %}
-                <th scope="col"> {{ field }} </th>
-            {% endif %}
+            <th scope="col"> {{ field }} </th>
             {% endfor %}
 
     </tr>
@@ -37,7 +33,6 @@
 
         <th scope="row" >{{ film.uid }} </th>
         <td><a href="/films/{{ film.uid }}/"> {{ film.name }} </a> </td>
-        <td>{{ film.country_films.name }}</td>
         <td>{{ film.birth }}</td>
         <td width="240px"><div class="scrollable">{{ film.description }}</div></td>
 

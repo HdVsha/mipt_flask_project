@@ -8,6 +8,7 @@ Positions of classes actually play role here
 
 '''
 
+
 # Creating an assisting table Role for Many To Many relation
 
 
@@ -22,12 +23,30 @@ class Role(db.Model):
     UniqueConstraint(role, person_id, film_id, name="uniq_pers_film")
 
 
+class Person_Country(db.Model):
+    __tablename__ = "Person_Country"
+    uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    person_id = db.Column(db.ForeignKey('Person.uid'))
+    country_id = db.Column(db.ForeignKey('Country.uid'))
+    person = db.relationship("Person", back_populates="countries")
+    country = db.relationship("Country", back_populates="people")
+
+
+class Film_Country(db.Model):
+    __tablename__ = "Film_Country"
+    uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    film_id = db.Column(db.ForeignKey('Film.uid'))
+    country_id = db.Column(db.ForeignKey('Country.uid'))
+    film = db.relationship("Film", back_populates="countries")
+    country = db.relationship("Country", back_populates="films")
+
+
 class Country(db.Model):
     __tablename__ = "Country"
     uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), unique=True)
-    people = db.relationship("Person", backref="country_of_birth")
-    films = db.relationship("Film", backref="country_films")
+    people = db.relationship("Person_Country", back_populates="country")
+    films = db.relationship("Film_Country", back_populates="country")
 
 
 def create_country(name):
@@ -41,26 +60,17 @@ def create_country(name):
 class Person(db.Model):
     __tablename__ = "Person"
     uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    firstname = db.Column(db.String(50))
-    lastname = db.Column(db.String(50))
-    country_of_birth_id = db.Column(db.Integer, db.ForeignKey("Country.uid"))
-    username = db.Column(db.String(50))
-    password = db.Column(db.String(50))
-    email = db.Column(db.String(50), unique=True)
-    birth = db.Column(db.Date)
+    firstname_lastname = db.Column(db.String(150))
+    birth = db.Column(db.Integer)
     films = db.relationship("Role", back_populates="person")
-    UniqueConstraint(firstname, lastname, birth, name="uniq_pers")
-    
-    def __init__(self, firstname, lastname, username=None, email=None, birth=None, country_id=None):
-        self.firstname = firstname
-        self.lastname = lastname
-        self.username = username
-        self.email = email
+    countries = db.relationship("Person_Country", back_populates="person")
+
+    def __init__(self, firstname_lastname, birth=None):
+        self.firstname_lastname = firstname_lastname
         self.birth = birth
-        self.country_of_birth_id = country_id
 
     def __str__(self):
-        return f"{self.firstname}"
+        return f"{self.firstname_lastname}"
 
     def columns(self):
         """Return the actual columns of a SQLAlchemy-mapped object"""
@@ -68,8 +78,8 @@ class Person(db.Model):
                 if isinstance(prop, ColumnProperty)]
 
 
-def create_person(person_name, lastname, username=None, email=None, birth=None, country_of_birth_id=None):
-    person = Person(person_name, lastname, username, email, birth, country_of_birth_id)
+def create_person(**kwargs):
+    person = Person(**kwargs)
     db.session.add(person)
     db.session.commit()
 
@@ -87,12 +97,11 @@ class Film(db.Model):
     __tablename__ = "Film"
     uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50))
-    country_id = db.Column(db.Integer, db.ForeignKey("Country.uid"))
-    birth = db.Column(db.Date)
+    birth = db.Column(db.Integer)
     description = db.Column(db.String(150))
     people = db.relationship("Role", back_populates="film")
-    UniqueConstraint(name, birth, name="uniq_film")
-    
+    countries = db.relationship("Film_Country", back_populates="film")
+
     def __str__(self):
         return f"{self.name}"
 
