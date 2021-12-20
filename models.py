@@ -15,12 +15,30 @@ Positions of classes actually play role here
 class Role(db.Model):
     __tablename__ = "Role"
     uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # person_id = db.Column(db.ForeignKey('Person.uid'))
+    # film_id = db.Column(db.ForeignKey('Film.uid'))
+    role = db.Column(db.String(50))
+    # person = db.relationship("Person", back_populates="films")
+    # film = db.relationship("Film", back_populates="people")
+    # UniqueConstraint(role, person_id, film_id, name="uniq_pers_film")
+# uid pers film
+# 1,1,1,Actor
+# 2,1,1,Director
+# 3,2,1,Operator
+# 4,3,2,Actor
+# 5,3,3,Director
+# 6,2,2,Director
+
+
+class Person_Film_Role(db.Model):
+    __tablename__ = "Person_Film_Role"
+    uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     person_id = db.Column(db.ForeignKey('Person.uid'))
     film_id = db.Column(db.ForeignKey('Film.uid'))
-    role = db.Column(db.String(50))
+    role_id = db.Column(db.ForeignKey('Role.uid'))
     person = db.relationship("Person", back_populates="films")
     film = db.relationship("Film", back_populates="people")
-    UniqueConstraint(role, person_id, film_id, name="uniq_pers_film")
+    UniqueConstraint(role_id, person_id, film_id, name="uniq_pers_film_role")
 
 
 class Person_Country(db.Model):
@@ -62,7 +80,7 @@ class Person(db.Model):
     uid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     firstname_lastname = db.Column(db.String(150))
     birth = db.Column(db.Integer)
-    films = db.relationship("Role", back_populates="person")
+    films = db.relationship("Person_Film_Role", back_populates="person")
     countries = db.relationship("Person_Country", back_populates="person")
 
     def __init__(self, firstname_lastname, birth=None):
@@ -99,7 +117,7 @@ class Film(db.Model):
     name = db.Column(db.String(50))
     birth = db.Column(db.Integer)
     description = db.Column(db.String(150))
-    people = db.relationship("Role", back_populates="film")
+    people = db.relationship("Person_Film_Role", back_populates="film")
     countries = db.relationship("Film_Country", back_populates="film")
 
     def __str__(self):

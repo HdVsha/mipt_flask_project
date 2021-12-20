@@ -2,7 +2,7 @@ from app import app
 import datetime
 from flask import render_template, request
 from models import create_person, create_film, create_country
-from models import Film, Person, Country
+from models import Film, Person, Country, Person_Film_Role, Role
 
 
 @app.route('/')
@@ -55,7 +55,11 @@ def films():
 def film(uid):
     film = Film.query.filter_by(uid=uid).first()
     if film:
-        return render_template("film.html", film=film)
+        roles = Person_Film_Role.query.filter_by(film_id=uid)
+        relations = []
+        for role in roles:
+            relations.append([Role.query.filter_by(uid=role.role_id).first(), Person.query.filter_by(uid=role.person_id).first()])
+        return render_template("film.html", film=film, relations=relations)
     return '<p>This film does not exist</p>'
 
 
@@ -70,5 +74,10 @@ def people():
 def person(uid):
     person = Person.query.filter_by(uid=uid).first()
     if person:
-        return render_template("person.html", person=person)
+        roles = Person_Film_Role.query.filter_by(person_id=uid)
+        relations = []
+        for role in roles:
+            relations.append(
+                [Role.query.filter_by(uid=role.role_id).first(), Film.query.filter_by(uid=role.film_id).first()])
+        return render_template("person.html", person=person, relations=relations)
     return '<p>This person does not exist</p>'

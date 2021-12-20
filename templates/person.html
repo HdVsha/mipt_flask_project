@@ -36,10 +36,10 @@
     </tr>
   </thead>
   <tbody>
-        {% for role in person.films %}
+        {% for rel in relations %}
             <tr>
-                <th scope="col" > <a href="/films/{{ role.film.uid }}">{{ role.film }} </a></th>
-                <td > {{ role.role }} </td>  <!-- the same as getattr(foo, "bar")-->
+                <th scope="col" > <a href="/films/{{ rel[1].uid }}">{{ rel[1].name }} </a></th>
+                <td > {{ rel[0].role }} </td>  <!-- the same as getattr(foo, "bar")-->
             </tr>
         {% endfor %}
   </tbody>
