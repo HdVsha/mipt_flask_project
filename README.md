@@ -1,2 +1,2 @@
 # mipt_flask_project
-This the solution to some simple task at mipt
+This is the solution to some simple task at mipt
